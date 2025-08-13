@@ -270,22 +270,25 @@ The **AUC** (Area Under the Curve) tells us how well the model separates the two
 - **0.5** = no better than random guessing
 """)
 
-# Compute ROC curve and AUC
-y_pred_proba = logistic_regression_model.predict_proba(x_test)[:, 1]
+# --------------------------- ROC & AUC --------------------------- #
+y_pred_proba = logistic_regression_model.predict_proba(x_test_scaled)[:, 1]
 fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba)
 roc_auc = auc(fpr, tpr)
 
-# Plot ROC curve
-fig, ax = plt.subplots()
-ax.plot(fpr, tpr, color='blue', lw=2, label=f'ROC Curve (AUC = {roc_auc:.2f})')
-ax.plot([0, 1], [0, 1], color='gray', lw=1, linestyle='--')
-ax.set_xlim([0.0, 1.0])
-ax.set_ylim([0.0, 1.05])
-ax.set_xlabel('False Positive Rate')
-ax.set_ylabel('True Positive Rate')
-ax.set_title('Receiver Operating Characteristic (ROC)')
-ax.legend(loc="lower right")
+print("AUC:", roc_auc)
+print('--------------------------------------------------------------------------------')
 
+# Create figure and plot
+fig, ax = plt.subplots(figsize=(8,8))
+ax.plot(fpr, tpr, label=f"Logistic Regression (AUC = {roc_auc:.3f})")
+ax.set_xlabel("False positive rate")
+ax.set_ylabel("True positive rate")
+ax.set_title('ROC Curve')
+ax.legend(loc='lower right')
+ax.grid()
+
+# Display in Streamlit
 st.pyplot(fig)
 
 # streamlit run "D:\Projects\MACHINE LEARNING PROJECTS\BREAST CANCER CLASSIFICATION\breast cancer app.py"
+
